@@ -12,8 +12,8 @@ class RegisterView(generics.CreateAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
         return Response({
-            'message': 'User created successfully',
-            'user_id': str(user.id)
+            "message": "Inscription réussie.",
+            "user_id": str(user.id)
         }, status=status.HTTP_201_CREATED)
 
 class LoginView(generics.GenericAPIView):
@@ -22,13 +22,14 @@ class LoginView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
         refresh = RefreshToken.for_user(user)
         return Response({
-            'access': str(refresh.access_token),
-            'refresh': str(refresh),
-            'user': {'id': str(user.id), 'email': user.email}
-        }, status=status.HTTP_200_OK)
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
+            "user": {"id": str(user.id), "email": user.email}
+        })
 
-class TokenRefreshView(TokenRefreshView):
+class RefreshTokenView(TokenRefreshView):
+    """JWT refresh"""
     pass
